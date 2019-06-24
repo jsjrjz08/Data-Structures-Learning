@@ -1,5 +1,7 @@
 /**
  * 循环队列，不再复用之前自定义的Array，而是从底层写起
+ * 出队、入队、查看队首元素（均摊）时间复杂度均为O(1)
+ * 与ArrayStack最大的区别是：出队均摊复杂度为O(1)，性能提高
  * @param <E>
  */
 public class LoopQueue<E> implements Queue<E> {
