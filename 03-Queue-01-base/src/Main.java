@@ -68,46 +68,31 @@ public class Main {
         ArrayQueue<Integer> aq = new ArrayQueue<>();
         LoopQueue<Integer> lq = new LoopQueue<>();
 
-        System.out.println("array queue");
-        testEnqueue(aq,opCnt1);
-        System.out.println("loop queue");
-        testEnqueue(lq,opCnt1);
 
         System.out.println("array queue");
-        testDequeue(aq,opCnt1);
+        testQueue(aq,opCnt1);
         System.out.println("loop queue");
-        testDequeue(lq,opCnt1);
+        testQueue(lq,opCnt1);
         //出队性能差别明显！入队效率数量级差不多，但入队效率ArrayQueue高；出队效率 LoopQueue 明显高！！
         //以上只是大致看一下效率情况，实际的效率还与操作系统、JVM、机器本身配置等有关！
     }
 
-    private static void testEnqueue(Queue<Integer> q, int opCnt) {
-        long startTime = System.nanoTime();
-        //入队
-        Random random = new Random();
-        for(int i=0;i<opCnt; i++) {
-            q.enqueue(random.nextInt());
-        }
-
-        long endTime = System.nanoTime();
-        System.out.println("opCnt="+opCnt+",testEnqueue exec time is "+ (endTime - startTime)/1000000000.0 +" s.");
-    }
-
-    private static void testDequeue(Queue<Integer> q, int opCnt) {
+    private static void testQueue(Queue<Integer> q, int opCnt) {
         long startTime = System.nanoTime();
 
         //入队
         Random random = new Random();
         for(int i=0; i<opCnt; i++) {
-            q.enqueue(random.nextInt());
+            q.enqueue(random.nextInt(Integer.MAX_VALUE));
         }
 
+        long middleTime = System.nanoTime();
         //出队
         for(int i=0; i<opCnt; i++) {
             q.dequeue();
         }
 
         long endTime = System.nanoTime();
-        System.out.println("opCnt="+opCnt+",testDequeue exec time is "+ (endTime - startTime)/1000000000.0 +" s.");
+        System.out.println("opCnt="+opCnt+",testQueue enqueue time is "+ (middleTime - startTime)/1000000000.0 +"s,dequeue time is "+ (endTime - middleTime)/1000000000.0 +"s");
     }
 }
