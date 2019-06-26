@@ -7,6 +7,12 @@
  * 4.删除元素
  * 5.查找元素
  * 6.判断链表是否为空
+ * 7.判断链表是否包含某元素
+ *
+ * 用户不会感知内部存在dummyHead;构造函数需要初始化dummyHead，让它指向一个节点对象;dummyhead.next是head节点；
+ * 使用dummyHead之后，每一个实际节点都能找到前一个节点了，就不需要对头节点做特殊处理了；
+ * 使用dummyHead之后，根据需求确定循环次数 i<next-1 还是 i<next！！！
+ *
  * @param <E>
  */
 public class LinkedList02<E> {
@@ -50,13 +56,6 @@ public class LinkedList02<E> {
         return size;
     }
 
-    public E getHead() {
-        if(dummyHead.next == null) {
-            throw new IllegalArgumentException("this linkedlist is empty");
-        }
-        return dummyHead.next.element;
-    }
-
     //链表是否为空
     public boolean isEmpty() {
         return size == 0;
@@ -68,10 +67,6 @@ public class LinkedList02<E> {
         sb.append("LinkedList: head="+dummyHead.next+",size="+size+",elements of nodes=head [");
 
         Node cur = dummyHead.next;
-        if(cur == null) {
-            return sb.append("] tail").toString();
-        }
-
         while (cur != null) {
             sb.append(cur.element + " -> ");
             cur = cur.next;
@@ -89,8 +84,9 @@ public class LinkedList02<E> {
             throw new IllegalArgumentException("add failed,index is out of bounds");
         }
 
+//        Node prev = dummyHead.next; //prev从dummyHead开始，并且i到index-1为止!
         Node prev = dummyHead;
-        for(int i=0; i<index-1; i++) {//通过index,确定前一个元素
+        for(int i=0; i<index; i++) {//通过index,确定前一个元素
             prev = prev.next;
         }
 
@@ -110,16 +106,94 @@ public class LinkedList02<E> {
         add(size,e); //是在size的位置插入！不是size-1 !!!!!
     }
 
+    public E get(int index) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+
+        Node cur = dummyHead.next;
+        for(int i=0;i<index;i++) {
+            cur = cur.next;
+        }
+        return cur.element;
+    }
+
+    public E getFirst() {
+        return get(0);
+    }
+
+    public E getLast() {
+        return get(size-1);
+    }
+
+    public void set(int index, E e) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+        Node cur = dummyHead.next;
+        for(int i=0;i<index;i++) {
+            cur = cur.next;
+        }
+        cur.element = e;
+    }
+
+    public E remove(int index) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+
+        Node prev = dummyHead;
+        for(int i=0;i<index;i++) {
+            prev = prev.next;
+        }
+        Node delNode = prev.next;
+        prev.next = delNode.next;
+        delNode.next = null;
+
+        //一定要维护！！
+        size --;
+
+        return delNode.element;
+    }
+
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    public E removeLast() {
+        return remove(size -1);
+    }
+
+    //查找链表是否包含某元素
+    public boolean contains(E e) {
+        Node cur = dummyHead.next;
+        while(cur != null) {
+            if(cur.element.equals(e)) {
+                return true;
+            }
+            cur = cur.next;
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         LinkedList02<Integer> ll = new LinkedList02<>();
+        System.out.println("当前链表："+ll);
+        System.out.println("contains："+ll.contains(0));
+        System.out.println("contains："+ll.contains(null));
+        System.out.println("isEmpty："+ll.isEmpty());
         ll.add(0,-10);
+        System.out.println("当前链表："+ll);
+        System.out.println("getLast="+ll.getLast());
+        ll.set(0,666);
+        System.out.println("get(0)="+ll.get(0));
         System.out.println(ll.getSize());
 //        System.out.println(ll.getHead());
         System.out.println(ll.isEmpty());
         System.out.println("当前链表："+ll);
 
         ll.add(0,-20);
+        System.out.println("get(1)="+ll.get(1));
         System.out.println("当前链表2："+ll);
         //添加元素
         for(int i=0;i<3;i++) {
@@ -129,6 +203,7 @@ public class LinkedList02<E> {
         System.out.println(ll.getSize());
         System.out.println(ll.isEmpty());
         System.out.println("当前链表："+ll);
+        System.out.println("getFirst="+ll.getFirst());
 
         ll.addLast(100);
         System.out.println("尾部插入："+ll);
@@ -137,5 +212,13 @@ public class LinkedList02<E> {
 //        ll.add(6,30);
         ll.add(4,30);
         System.out.println("add插入1："+ll);
+        System.out.println("contains："+ll.contains(0));
+        System.out.println("contains："+ll.contains(666));
+        System.out.println("contains："+ll.contains(null));
+
+        System.out.println("remove1："+ll.remove(1)+",ll1="+ll);
+        System.out.println("remove2："+ll.remove(5)+",ll2="+ll);
+        System.out.println("removeFirst3："+ll.removeFirst()+",ll3="+ll);
+        System.out.println("removeLast4："+ll.removeLast()+",ll4="+ll);
     }
 }
