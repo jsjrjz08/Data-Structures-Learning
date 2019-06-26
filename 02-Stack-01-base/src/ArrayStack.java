@@ -64,4 +64,32 @@ public class ArrayStack<E> implements Stack<E> {
     public int getSize() {
         return array.getSize();
     }
+
+    public static void main(String[] args) {
+
+        ArrayStack<Integer> stk = new ArrayStack<>();
+        System.out.println(stk.isEmpty());
+        for(int i=0; i<10; i++) {
+            stk.push(i);
+            System.out.println(stk);
+        }
+        System.out.println(stk);
+        System.out.println(stk.isEmpty());
+
+        System.out.println(stk.pop());
+        System.out.println(stk);
+
+        System.out.println(stk.peek());
+
+        System.out.println("size="+stk.getSize());
+
+        //getCapacity与具体的底层实现有关，此处使用链表实现栈结构，链表的capacity没有意义，所以这里没有设计这个方法
+//        System.out.println("capacity="+stk.getCapacity());
+
+        stk.push(10);
+        System.out.println(stk);
+        stk.push(11);//触发resize
+        System.out.println(stk);
+
+    }
 }
