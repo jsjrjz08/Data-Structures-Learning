@@ -7,6 +7,7 @@
  * 4.删除元素
  * 5.查找元素
  * 6.判断链表是否为空
+ * 7.判断链表是否包含某元素
  * @param <E>
  */
 public class LinkedList01<E> {
@@ -50,13 +51,6 @@ public class LinkedList01<E> {
         return size;
     }
 
-    public E getHead() {
-        if(head == null) {
-            throw new IllegalArgumentException("this linkedlist is empty");
-        }
-        return head.element;
-    }
-
     //链表是否为空
     public boolean isEmpty() {
         return size == 0;
@@ -68,10 +62,6 @@ public class LinkedList01<E> {
         sb.append("LinkedList: head="+head+",size="+size+",elements of nodes=head [");
 
         Node cur = head;
-        if(cur == null) {
-            return sb.append("] tail").toString();
-        }
-
         while (cur != null) {
             sb.append(cur.element + " -> ");
             cur = cur.next;
@@ -123,7 +113,6 @@ public class LinkedList01<E> {
         }
 
         //因为在某个位置插入元素的关键是：找到这个位置的节点的前一个节点，而如果插入位置在头结点的位置，那么是找不到头结点的前一个节点的，所以，需要特殊处理一下
-//        if(index == 0 || head == null) {
         if(index == 0) {
             head = new Node(element,head);
         } else {
@@ -156,15 +145,131 @@ public class LinkedList01<E> {
     }
 
 
+//    public E getHead() {
+//        if(head == null) {
+//            throw new IllegalArgumentException("this linkedlist is empty");
+//        }
+//        return head.element;
+//    }
+
+    //获得指定位置的元素
+    //在链表中不是常用操作，仅作为练习用
+    public E get(int index) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+
+        if(head == null) {
+            return null;
+        } else {
+            Node cur = head;
+            for (int i = 0; i < index; i++) {
+                cur = cur.next;
+            }
+            return cur.element;
+        }
+    }
+
+    public E getFirst() {
+        return get(0);
+    }
+
+    public E getLast() {
+        return get(size -1);
+    }
+
+    //更新元素
+    //在链表中不是常用操作，仅作为练习用
+    public void set(int index, E e) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+        Node cur = head;
+        for(int i=0; i<index; i++) {
+            cur = cur.next;
+        }
+        cur.element = e;
+    }
+
+    //删除元素，并返回删除的元素
+    //在链表中不是常用操作，仅作为练习用
+    public E remove(int index) {
+        if(index<0 || index >= size) {
+            throw new IllegalArgumentException("get failed,index is out of bounds.");
+        }
+
+        //思路：找到指定位置的前一个节点元素prev，delNode=prev.next;修改prev.next=delNode.next;delNode.next=null;
+        //注意：由于第一个节点没有前一个节点，所以，需要特殊处理！
+        if(index == 0) {
+            if(head == null) {
+                return null;
+            } else {
+                Node delNode = head;
+                head = head.next;
+                delNode.next = null;
+                size --;
+                return delNode.element;
+            }
+        } else {
+            Node prev = head;
+            for(int i=0; i< index-1; i++) {
+                prev = prev.next;
+            }
+            Node delNode = prev.next;
+            prev.next = delNode.next;
+            delNode.next = null;
+
+            //注意维护变量！
+            size --;
+
+            return delNode.element;
+        }
+    }
+
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    public E removeLast() {
+        return remove(size - 1);
+    }
+
+    //查找链表是否包含某元素
+    public boolean contains(E e) {
+        Node cur = head;
+
+//        if(cur == null) {
+//            throw new IllegalArgumentException("empty linkedlist");
+//        }
+
+        while (cur != null) {
+            if(cur.element.equals(e)) {
+                return true;
+            }
+            cur = cur.next;
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
         LinkedList01<Integer> ll = new LinkedList01<>();
+        System.out.println("当前链表："+ll);
+        System.out.println("contains："+ll.contains(0));
+        System.out.println("contains："+ll.contains(null));
+        System.out.println("isEmpty："+ll.isEmpty());
         ll.add(0,-10);
+        System.out.println("当前链表："+ll);
+        System.out.println("getLast="+ll.getLast());
+        ll.set(0,666);
+        System.out.println("get(0)="+ll.get(0));
         System.out.println(ll.getSize());
 //        System.out.println(ll.getHead());
         System.out.println(ll.isEmpty());
         System.out.println("当前链表："+ll);
 
         ll.add(0,-20);
+        System.out.println("get(1)="+ll.get(1));
         System.out.println("当前链表2："+ll);
         //添加元素
         for(int i=0;i<3;i++) {
@@ -174,6 +279,7 @@ public class LinkedList01<E> {
         System.out.println(ll.getSize());
         System.out.println(ll.isEmpty());
         System.out.println("当前链表："+ll);
+        System.out.println("getFirst="+ll.getFirst());
 
         ll.addLast(100);
         System.out.println("尾部插入："+ll);
@@ -182,5 +288,13 @@ public class LinkedList01<E> {
 //        ll.add(6,30);
         ll.add(4,30);
         System.out.println("add插入1："+ll);
+        System.out.println("contains："+ll.contains(0));
+        System.out.println("contains："+ll.contains(666));
+        System.out.println("contains："+ll.contains(null));
+
+        System.out.println("remove1："+ll.remove(1)+",ll1="+ll);
+        System.out.println("remove2："+ll.remove(5)+",ll2="+ll);
+        System.out.println("removeFirst3："+ll.removeFirst()+",ll3="+ll);
+        System.out.println("removeLast4："+ll.removeLast()+",ll4="+ll);
     }
 }
