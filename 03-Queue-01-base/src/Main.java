@@ -63,18 +63,33 @@ public class Main {
         System.out.println("------------------------ 循环队列 end ------------------------");
         */
 
-        System.out.println("************ ArrayQueue与LoopQueue性能测试 ************");
-        int opCnt1 = 100000;
-        ArrayQueue<Integer> aq = new ArrayQueue<>();
-        LoopQueue<Integer> lq = new LoopQueue<>();
+//        System.out.println("************ ArrayQueue与LoopQueue性能测试 ************");
+//        int opCnt1 = 100000;
+//        ArrayQueue<Integer> aq = new ArrayQueue<>();
+//        LoopQueue<Integer> lq = new LoopQueue<>();
+//
+//
+//        System.out.println("array queue");
+//        testQueue(aq,opCnt1);
+//        System.out.println("loop queue");
+//        testQueue(lq,opCnt1);
+//        //出队性能差别明显！入队效率数量级差不多，但入队效率ArrayQueue高；出队效率 LoopQueue 明显高！！
+//        //以上只是大致看一下效率情况，实际的效率还与操作系统、JVM、机器本身配置等有关！
 
 
-        System.out.println("array queue");
-        testQueue(aq,opCnt1);
-        System.out.println("loop queue");
-        testQueue(lq,opCnt1);
-        //出队性能差别明显！入队效率数量级差不多，但入队效率ArrayQueue高；出队效率 LoopQueue 明显高！！
-        //以上只是大致看一下效率情况，实际的效率还与操作系统、JVM、机器本身配置等有关！
+        System.out.println("************ LoopQueue与LinkedListQueue性能测试 ************");
+        int opCnt2 = 100000000;
+        LoopQueue<Integer> lq2 = new LoopQueue<>();
+        System.out.println("loop queue 2");
+        testQueue(lq2,opCnt2);
+
+        LinkedListQueue<Integer> llq = new LinkedListQueue<>();
+        System.out.println("linkedlist queue");
+        testQueue(llq,opCnt2);
+
+        //通过以上测试，不断调整数据规模，观察得知：
+        //出队操作，链表队列优于循环队列【链表队列不需要有缩容操作】
+        //入队操作，链表队列不一定优于循环队列【链表队列需要不断new对象，比较耗费时间】
     }
 
     private static void testQueue(Queue<Integer> q, int opCnt) {
