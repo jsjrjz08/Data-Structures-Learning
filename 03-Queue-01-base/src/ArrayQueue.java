@@ -18,7 +18,7 @@ public class ArrayQueue<E> implements Queue<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int size = array.getSize();
-        sb.append(String.format("Queue: front [size=%d, capacity=%d, data=",size,array.getCapacity()));
+        sb.append(String.format("Queue: size=%d, capacity=%d, data=front [",size,array.getCapacity()));
         for(int i=0; i<size; i++) {
             sb.append(array.get(i));
             if(i != size - 1) {
@@ -62,5 +62,37 @@ public class ArrayQueue<E> implements Queue<E> {
     @Override
     public boolean isEmpty() {
         return array.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        ArrayQueue<Integer> queue = new ArrayQueue<>(5);
+        System.out.println(queue);
+        System.out.println(queue.isEmpty());
+        System.out.println(queue.getSize());
+        System.out.println(queue.getCapacity());
+
+        for(int i=0; i<3; i++) {
+            queue.enqueue(i);
+            System.out.println(queue);
+        }
+        System.out.println(queue.isEmpty());
+        System.out.println(queue.getSize());
+        System.out.println(queue.getCapacity());
+
+        System.out.println("getFront="+queue.getFront());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        //exception
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
     }
 }

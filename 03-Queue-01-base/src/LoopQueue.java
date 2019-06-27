@@ -6,8 +6,8 @@
  */
 public class LoopQueue<E> implements Queue<E> {
     private E[] data;
-    private int front;
-    private int tail;
+    private int front;//头指针
+    private int tail;//尾指针
     private int size; //队列中的元素个数
 
 
@@ -87,7 +87,7 @@ public class LoopQueue<E> implements Queue<E> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("LoopQueue: front [size=%d, capacity=%d, data=",size,getCapacity()));
+        sb.append(String.format("LoopQueue: size=%d, capacity=%d, data=front [",size,getCapacity()));
         for(int i=front; i<tail; i = (i+1) % data.length) {//tail 可能比front 小
             sb.append(data[i]);
             if(i != tail - 1) {
@@ -125,5 +125,36 @@ public class LoopQueue<E> implements Queue<E> {
 
     }
 
+    public static void main(String[] args) {
+        LoopQueue<Integer> queue = new LoopQueue<>(5);
+        System.out.println(queue);
+        System.out.println(queue.isEmpty());
+        System.out.println(queue.getSize());
+        System.out.println(queue.getCapacity());
+
+        for(int i=0; i<3; i++) {
+            queue.enqueue(i);
+            System.out.println(queue);
+        }
+        System.out.println(queue.isEmpty());
+        System.out.println(queue.getSize());
+        System.out.println(queue.getCapacity());
+
+        System.out.println("getFront="+queue.getFront());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+
+        //exception
+        System.out.println(queue.dequeue());
+        System.out.println(queue);
+    }
 
 }
