@@ -17,7 +17,7 @@ public class Solution {
     }
 
     /**
-     * 删除链表中值为指定值的元素we
+     * 删除链表中值为指定值的元素
      * @param head 链表的头结点指针
      * @param val 指定值
      * @return 返回删除指定元素后的链表

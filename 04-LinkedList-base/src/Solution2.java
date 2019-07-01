@@ -37,12 +37,13 @@ class ListNode {
     }
 }
 
+//含有虚拟头结点
 //本地调试，可以自己制作测试用例、debug等。修改ListNode的构造方法、添加toString方法
 //leetcode 203
 public class Solution2 {
 
     /**
-     * 删除链表中值为指定值的元素we
+     * 删除链表中值为指定值的元素
      * @param head 链表的头结点指针
      * @param val 指定值
      * @return 返回删除指定元素后的链表
