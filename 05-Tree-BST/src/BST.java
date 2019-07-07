@@ -413,12 +413,11 @@ public class BST<E extends Comparable<E>> {//元素可比较！Comparable
 //        if(node.e.compareTo(e) == 0) {
 //            return node;
 //        } else if(node.e.compareTo(e)>0) {
-//            node.left = find(node.left, e);
+//            return find(node.left, e);
 //        } else if(node.e.compareTo(e)<0) {
-//            node.right = find(node.right, e);
+//            return find(node.right, e);
 //        }
 //
-//        return node;
 //    }
 
 
