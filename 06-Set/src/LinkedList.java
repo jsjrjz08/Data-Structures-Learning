@@ -191,10 +191,10 @@ public class LinkedList<E> {
         //函数主体
         if(node.element.equals(e)) {
             node = node.next;
+            size --;
         } else {
             node.next = removeElement(node.next,e);
         }
-        size --;
         return node;
     }
 
@@ -243,7 +243,11 @@ public class LinkedList<E> {
         System.out.println("removeFirst3："+ll.removeFirst()+",ll3="+ll);
         System.out.println("removeLast4："+ll.removeLast()+",ll4="+ll);
 
-        ll.removeElement(1);
-        System.out.println("after removeElement, list is "+ ll);
+        int e=30;
+        ll.addLast(e);
+        ll.addLast(e);
+        System.out.println("addLast："+ll);
+        ll.removeElement(e);
+        System.out.println("after removeElement "+e+" list is "+ ll);
     }
 }

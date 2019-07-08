@@ -9,5 +9,5 @@ public interface Set<E> {
     boolean isEmpty();
     boolean contains(E e);
     void add(E e);
-    E remove();
+    void remove(E e);
 }
