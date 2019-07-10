@@ -30,14 +30,13 @@ public class Main {
     }
     private static void testSet(Set<String> set, ArrayList<String> words) {
 
-        Random random = new Random();
-        double startTime = System.nanoTime();
+        long startTime = System.nanoTime();
 
         for(int i=0;i<words.size();i++) {
             set.add(words.get(i));
         }
 
-        double endTime = System.nanoTime();
+        long endTime = System.nanoTime();
         System.out.println("total size is "+words.size()+",and different "+set.getSize()+" words cost "+(endTime-startTime)/1000000000.0+" s.");
 
     }
