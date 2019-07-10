@@ -140,8 +140,12 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
 
     @Override
     public V remove(K key) {
-        root = remove(root,key);
-        return get(key);
+        Node delNode = get(root,key);
+        if(delNode != null) {
+            root = remove(root, key);
+            return delNode.value;
+        }
+        return null;
     }
 
     //递归函数：在以node为根节点的二分搜索树中删除键为key的元素，并返回新的二分搜索树的根
@@ -231,7 +235,8 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
         map.add(8,19);
         System.out.println(map);
 
-        map.remove(7);
+        //删除
+        System.out.println("删除 ： "+map.remove(7));
         System.out.println(map);
 
 
