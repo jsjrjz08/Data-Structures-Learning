@@ -53,25 +53,27 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
 
     @Override
     public boolean contains(K key) {
-        return contains(root,key);
+
+//        return contains(root,key);
+        return get(root,key) != null;
     }
 
-    //递归函数：以node为根节点的二分搜索树是否包含键key
-    private boolean contains(Node node, K key) {
-        //结束条件
-        if(node == null) {
-            return false;
-        }
-
-        //函数主体
-        if(node.key.compareTo(key) == 0) {
-            return true;
-        } else if(node.key.compareTo(key) > 0) {
-            return contains(node.left,key);
-        } else {
-            return contains(node.right,key);
-        }
-    }
+//    //递归函数：以node为根节点的二分搜索树是否包含键key
+//    private boolean contains(Node node, K key) {
+//        //结束条件
+//        if(node == null) {
+//            return false;
+//        }
+//
+//        //函数主体
+//        if(node.key.compareTo(key) == 0) {
+//            return true;
+//        } else if(node.key.compareTo(key) > 0) {
+//            return contains(node.left,key);
+//        } else {
+//            return contains(node.right,key);
+//        }
+//    }
 
     @Override
     public V get(K key) {
@@ -102,11 +104,14 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
         Node node = get(root,key);
         if(node != null ) {
             node.value = value;
+        } else {
+            throw new IllegalArgumentException("this key doesn't exist");
         }
     }
 
     @Override
     public void add(K key, V value) {
+
         root = add(root,key,value);
     }
 
@@ -125,7 +130,10 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
             node.left = add(node.left,key,value);
         } else if(node.key.compareTo(key) < 0) {
             node.right = add(node.right,key,value);
-        } //node.key.compareTo(key) == 0  //-------->不添加键重复的元素！！
+        } else {//node.key.compareTo(key) == 0
+            // -------->不添加键重复的元素！！，更新value
+            node.value = value;
+        }
 
         return node;
     }
@@ -154,14 +162,14 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
             }
 
             if(node.left != null && node.right != null) {
-                //复制node
                 //在node的右子树种找到并删除最小值节点，作为取代node的节点newNode,
-                Node newNode = min(node.right);
+                Node newNode = min(node.right);//只是找到这个节点，此时，这个节点还挂在node的右子树上！
                 //newNode的右子树是node的右子树去掉newNode节点后的子树，newNode的左子树是node的左子树
                 //1和2顺序不能调换！
-                newNode.right = removeMin(node.right);//1
+                newNode.right = removeMin(node.right);//1 --摘除newNode之后的node的右子树
                 newNode.left = node.left;//2
-                node = null;
+                node.right = null;
+                node.left = null;
 //                size --;//不需要维护了！！！！！！
                 return newNode;
             }
@@ -189,7 +197,7 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
         }
 
         if(node.left == null) {//找到最小值节点node
-            node = node.right;
+            node = node.right;//摘除节点
             size --;
             return node;
         } else {
@@ -218,7 +226,9 @@ public class BSTMap<K extends Comparable, V> implements Map<K,V> {
         System.out.println(map.contains(9));
 
         System.out.println(map.get(4));
-        map.set(7,9);
+        map.set(8,9);
+        System.out.println(map);
+        map.add(8,19);
         System.out.println(map);
 
         map.remove(7);
