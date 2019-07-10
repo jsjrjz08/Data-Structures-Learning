@@ -38,7 +38,7 @@ public class Main {
         }
 
         double endTime = System.nanoTime();
-        System.out.println("total size is "+words.size()+",add different "+set.getSize()+" words cost "+(endTime-startTime)/1000000000.0+" s.");
+        System.out.println("total size is "+words.size()+",and different "+set.getSize()+" words cost "+(endTime-startTime)/1000000000.0+" s.");
 
     }
 }
