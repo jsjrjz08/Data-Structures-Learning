@@ -26,6 +26,10 @@ public class LinkedListSegmentTree<E> {
             this(e,start,end,null,null);
         }
 
+        public Node(int start,int end) {
+            this(null,start,end,null,null);
+        }
+
         @Override
         public String toString() {
             return "[element="+e+",seg=["+start+","+end+"],left="+left+",right="+right+"]";
@@ -50,24 +54,24 @@ public class LinkedListSegmentTree<E> {
         }
 
         //创建树
-        this.tree = buildSegmentTree(0,len-1);
+        this.tree = buildSegmentTree(new Node(0,len-1));
     }
 
-    //递归函数：使用data在区间[l,r]上的元素创建线段树，并返回新的线段树的根
-    private Node buildSegmentTree(int l,int r) {
+    //递归函数：{使用data在区间[l,r]上的元素}以弄的为根节点创建线段树，并返回新的线段树的根
+    private Node buildSegmentTree(Node node) {
         //结束条件
-        if(l == r) {
-            return new Node(data[l],l,r);//设置e
+        if(node.start == node.end) {
+            node.e = data[node.start];
+            return node;//设置e
         }
 
-        //创建根节点
-        Node node = new Node(null,l,r);//未设置e,left,right
-
+        int l = node.start;
+        int r = node.end;
         int mid = l+(r-l)/2;
         //左
-        node.left = buildSegmentTree(l,mid);
+        node.left = buildSegmentTree(new Node(l,mid));
         //右
-        node.right = buildSegmentTree(mid+1,r);
+        node.right = buildSegmentTree(new Node(mid+1,r));
         //当前node的e
         node.e = merger.merge(node.left.e,node.right.e);
 
