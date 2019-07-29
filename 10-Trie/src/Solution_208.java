@@ -61,7 +61,7 @@ public class Solution_208 {
             if(!node.next.containsKey(cur)) {
                 return false;
             } else {
-                return searchChar(node.next.get(cur),word,index);
+                return searchChar(node.next.get(cur),word,index+1);
             }
         }
 
