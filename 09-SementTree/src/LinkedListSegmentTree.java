@@ -57,7 +57,7 @@ public class LinkedListSegmentTree<E> {
         this.tree = buildSegmentTree(new Node(0,len-1));
     }
 
-    //递归函数：{使用data在区间[l,r]上的元素}以弄的为根节点创建线段树，并返回新的线段树的根
+    //递归函数：{使用data在区间[l,r]上的元素}以node为根节点创建线段树，并返回新的线段树的根
     private Node buildSegmentTree(Node node) {
         //结束条件
         if(node.start == node.end) {
