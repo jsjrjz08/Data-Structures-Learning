@@ -6,14 +6,12 @@ public class Main {
         String fileName = "D:\\git_repo\\Data-Structures-Learning\\06-Set\\src\\pride-and-prejudice.txt";
 //        String fileName = "D:\\git_repo\\Data-Structures-Learning\\06-Set\\src\\a-tale-of-two-cities.txt";
         ArrayList<String> words = new ArrayList<>();
-        FileOperation.readFile(fileName,words);
+        if(FileOperation.readFile(fileName,words)) {
 
-        System.out.println("-------BSTMap---------");
-        BSTMap<String,Integer> bstMap = new BSTMap<>();
-        testMap(bstMap,words);
-        System.out.println("-------LinkedListMap---------");
-        LinkedListMap<String,Integer> llMap = new LinkedListMap<>();
-        testMap(llMap,words);
+            testMap(new BSTMap<>(), words);
+            testMap(new AVLTreeMap<>(), words);
+//          testMap(new LinkedListMap<>(),words);
+        }
 
         //链表本身是可以添加重复元素的，但是Map是不允许重复key存在的，所以，使用链表实现Map的添加操作时，需要先做一下contains判断，
         //这样一来，就增加了时间开销
@@ -31,6 +29,7 @@ public class Main {
     //词频统计
     private static void testMap(Map<String,Integer> map, ArrayList<String> words) {
 
+        System.out.println("-------"+map.getClass().getName()+"---------");
         long startTime = System.nanoTime();
 
         for(String word : words) {
@@ -39,6 +38,9 @@ public class Main {
             } else {
                 map.add(word, 1);
             }
+        }
+        for(String word:words) {
+            map.contains(word);
         }
 
         long endTime = System.nanoTime();
