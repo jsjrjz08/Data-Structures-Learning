@@ -171,13 +171,6 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         return x;
     }
 
-    //查找key对应的节点
-    private Node find(K key) {
-        if(key == null) {
-            return null;
-        }
-        return findNode(root,key);
-    }
 
     //递归函数：在以node为根节点的树中查找key对应的节点信息，并将节点信息返回
     private Node findNode(Node node,K key) {
@@ -197,20 +190,20 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
 
     @Override
     public boolean contains(K key) {
-        return find(key) == null ? false : true;
+        return findNode(root,key) == null ? false : true;
     }
 
     @Override
     public V get(K key) {
-        Node node = find(key);
+        Node node = findNode(root,key);
         return node == null ? null : node.value;
     }
 
     @Override
     public void set(K key, V value) {
-        Node node = find(key);
+        Node node = findNode(root,key);
         if(node == null) {
-            throw new IllegalArgumentException("Key is not exists.");
+            throw new IllegalArgumentException("Key " + key + " does not exist.");
         }
         node.value = value;
     }
@@ -238,11 +231,9 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         node.height = 1 + Math.max(getHeight(node.left),getHeight(node.right));
         //计算平衡因子 左 - 右
         int balanceFactor = getBalanceFactor(node);
-        if(Math.abs(balanceFactor) > 1) {
-            System.out.println("noBalanced:"+balanceFactor);
-            System.out.println("node:"+node);
-            return null;
-        }
+//        if(Math.abs(balanceFactor) > 1) {
+//            System.out.println("noBalanced:"+balanceFactor);
+//        }
 
         //LL
         //左子树不平衡 且 新加节点在左子树的左侧（左子树的左子树高度 大于或等于 左子树的右子树高度）
@@ -255,7 +246,7 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         //RR
         //右子树不平衡 且 新加节点在右子树的右侧（右子树的左子树高度 小于或等于 右子树的右子树高度）
         //左旋转
-        if(balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
+        else if(balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
             //左旋转
             node = leftRotate(node);
         }
@@ -263,7 +254,7 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         //LR
         //左子树不平衡 且 新加节点在左子树的右侧（左子树的左子树高度 小于 左子树的右子树高度）
         //先左旋转，再右旋转
-        if(balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
+        else if(balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
             //node向下两层的节点进行左旋转，转化成LL问题
             node.left = leftRotate(node.left);
             //右旋转
@@ -273,7 +264,7 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         //RL
         //右子树不平衡 且 新加节点在右子树的左侧（右子树的左子树高度 大于 右子树的右子树高度）
         //先右旋转，再左旋转
-        if(balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
+        else if(balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
             //node向下两层的节点进行右旋转，转化成RR问题
             node.right = rightRotate(node.right);
             //左旋转
@@ -285,7 +276,7 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
 
     @Override
     public V remove(K key) {
-        Node node = find(key);
+        Node node = findNode(root,key);
         root = removeNode(root,key);
         return node == null ? null : node.value;
     }
@@ -340,18 +331,18 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K,V> {
         }
 
         //RR
-        if(balanceFactor < -1 && getBalanceFactor(retNode.right) <= 0) {
+        else if(balanceFactor < -1 && getBalanceFactor(retNode.right) <= 0) {
             retNode = leftRotate(retNode);
         }
 
         //LR
-        if(balanceFactor > 1 && getBalanceFactor(retNode.left) < 0) {
+        else if(balanceFactor > 1 && getBalanceFactor(retNode.left) < 0) {
             retNode.left = leftRotate(retNode.left);
             retNode = rightRotate(retNode);
         }
 
         //RL
-        if(balanceFactor < -1 && getBalanceFactor(retNode.right) > 0) {
+        else if(balanceFactor < -1 && getBalanceFactor(retNode.right) > 0) {
             retNode.right = rightRotate(retNode.right);
             retNode = leftRotate(retNode);
         }
