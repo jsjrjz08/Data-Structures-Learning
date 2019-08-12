@@ -1,30 +1,38 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
         String fileName = "D:\\git_repo\\Data-Structures-Learning\\12-Tree-AVLTree\\src\\pride-and-prejudice.txt";
         ArrayList<String> words = new ArrayList<>();
         if(FileOperation.readFile(fileName,words)) {
-//            testMap(new BSTMap<>(),words);
+            testMap(new BSTMap<>(),words,false);
 
             AVLTree<String,Integer> avl = new AVLTree<>();
-            testMap(avl,words);
+            testMap(avl,words,false);
             System.out.println("isBalanced="+avl.isBalanced());
             System.out.println("isBST="+avl.isBST());
+
+            testMap(new BSTMap<>(),words,true);
+            testMap(new AVLTree<>(),words,true);
         }
 
 
-        //对于满二叉树而言，添加/删除/查找/改 时间复杂度为O(log n)
-        //对于链表而言，添加/删除/查找/改 时间复杂度为O(n)
-        //n越大，BST比链表性能越优越
-
-        //二叉树最坏情况下(有序插入元素)，会蜕变成链表，时间复杂度达到链表级别 O(n)
-
+        //数据直接存入AVL和BST，AVL的读写性能更优
+        //数据排序后存入AVL和BST，AVL的读写性能更优、更明显
 
     }
     //词频统计
-    private static void testMap(Map<String,Integer> map, ArrayList<String> words) {
-        System.out.println("--------------"+map.getClass().getName()+"--------------");
+    private static void testMap(Map<String,Integer> map, ArrayList<String> words,boolean isOrdered) {
+
+
+        if(isOrdered) {
+            Collections.sort(words);
+            System.out.println("--------------"+map.getClass().getName()+"----排序----------");
+        } else {
+            System.out.println("--------------"+map.getClass().getName()+"----不排序----------");
+        }
+
 
         long startTime = System.nanoTime();
 
@@ -36,8 +44,15 @@ public class Main {
             }
         }
 
+        long midTime = System.nanoTime();
+        for(String word : words) {
+            map.contains(word);
+        }
+
         long endTime = System.nanoTime();
-        System.out.println("total size is "+words.size()+", and different "+map.getSize()+" words, cost "+(endTime-startTime)/1000000000.0+" s.");
+        System.out.println("total size is "+words.size()+", and different "+map.getSize()+" words,total costs "+(endTime-startTime)/1000000000.0+" s.");
+        System.out.print("add words cost "+(midTime-startTime)/1000000000.0+" s,");
+        System.out.println("find words cost "+(endTime-midTime)/1000000000.0+" s.");
         System.out.println("frequency of pride is "+ map.get("pride"));
         System.out.println("frequency of prejudice is "+ map.get("prejudice"));
 
