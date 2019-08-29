@@ -182,7 +182,8 @@ public class MaxHeap<E extends Comparable<E> > {
     public static void main(String[] args) {
 //        Integer[] initArr = {15,11,3,7,9,8,20,30,40,50,67};
 //        Integer[] initArr = {1,5,1};
-        Integer[] initArr = {2,2,3,2,2,2};
+//        Integer[] initArr = {2,2,3,2,2,2};
+        Integer[] initArr = {5,11,7,2,3,17};
         MaxHeap<Integer> maxHeap = new MaxHeap<>(initArr.length);
         for(int i=0;i<initArr.length;i++) {
             maxHeap.add(initArr[i]);
